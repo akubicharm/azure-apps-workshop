@@ -36,9 +36,12 @@ Ctrl+Shift+p または 上部のメニューで View -> Command Palette...
 例）HttpExampleKeiOmizo
 
 . Open in current window を選択しリターンを入力します
-link::images/funcws_vscode_newproject.mp4[]
+
 
 これで、Maven のプロジェクトが生成されました。
+
+操作手順の動画: 
+link:./images/funcws_vscode_newproject.mp4[]
 
 image::images/funcws_mvnproj_structure.png[]
 
