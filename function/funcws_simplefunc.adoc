@@ -163,6 +163,8 @@ https://docs.microsoft.com/ja-jp/azure/azure-functions/functions-add-output-bind
 
 Inbound/Outbound の Bindings を設定していきます。
 
+image::images/funcws_bindings.png[]
+
 
 ### QueueStorageのデプロイ
 
