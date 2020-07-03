@@ -88,7 +88,8 @@ pom.xml の抜粋
 ```
 
 ====
-OSにlinuxを選択した場合は、従量課金プランが利用できないので`<pricingTier>` で、App Service Plan または　Premium Plan の SKU を設定します。
+OSにlinuxを選択した場合は、リージョンによっては従量課金プランが利用できないので、従量課金プランが利用可能なリージョンを選択します。
+ex) eastus
 
 https://docs.microsoft.com/ja-jp/azure/azure-functions/functions-premium-plan#available-instance-skus
 ====
