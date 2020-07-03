@@ -19,7 +19,7 @@ Ctrl+Shift+p または 上部のメニューで View -> Command Palette...
 
 . `> Azure Functions: Create New Project` を選択します
 
-. フォルダ選択のダイアログでプロジェクト用のフォルダを選択します
+. フォルダ選択のダイアログでプロジェクト用のフォルダ選択します
 
 . 言語の選択で Java を選択します
 
@@ -36,8 +36,7 @@ Ctrl+Shift+p または 上部のメニューで View -> Command Palette...
 例）HttpExampleKeiOmizo
 
 . Open in current window を選択しリターンを入力します
-
-video::images/funcws_vscode_newproject.mp4[]
+link::images/funcws_vscode_newproject.mp4[]
 
 これで、Maven のプロジェクトが生成されました。
 
@@ -161,6 +160,114 @@ https://docs.microsoft.com/ja-jp/azure/azure-functions/functions-add-output-bind
 Inbound/Outbound の Bindings を設定していきます。
 
 
-HttpTrigger -> [Function]->
+### QueueStorageのデプロイ
+
+. Azureポータルで、ストレージアカウントを作成します
+. Queue Storageを追加します
++
+Queue Name: outqueue
 
 
+
+### local.settings.json の編集
+function.json から AppStorage という名前で参照している Queue Storage の接も文字列を追加します。
+
+```
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "＜Functioのの設定情報が保持されるストレージアカウントの接続文字列＞",
+    "FUNCTIONS_WORKER_RUNTIME": "java",
+    "AppStorage": "＜Queue Storageの接続文字列＞"
+  }
+}
+```
+
+### Function.java の編集
+HttpTriggerで実行されるFunctionからアウトバウンドのバインディングを利用できるように編集します。
+
+. import 文を追加します
++
+OutboundBinding と QueueOutputのアノテーションクラスをインポートします
++
+```
+import com.microsoft.azure.functions.OutputBinding;
+import com.microsoft.azure.functions.annotation.QueueOutput;
+```
+
+. メソッドの定義を変更します
++
+run() パラメータに QueueOutput を追加します。
++
+ name: bindingの名称
+ queueName: キュー名
+ connection: QueueStorageの接続文字列の変数名
++
+```
+    @FunctionName("HttpExample")
+    public HttpResponseMessage run(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.GET, HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            @QueueOutput(name = "msg", queueName = "outqueue", connection = "AppStorage") OutputBinding<String> msg,
+            final ExecutionContext context)
+```
+
+. QueueStorageにメッセージを送信するコードを追加します
++
+```
+        if (name == null) {
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name on the query string or in the request body").build();
+        } else {
+            msg.setValue(name);
+            msg.setValue(query);
+            return request.createResponseBuilder(HttpStatus.OK).body("Hello, " + name).build();
+        }
+```
+
+
+### ローカルでの実行
+
+ローカルで実行します。
+```
+mvn clean package azure-functions:run
+```
+
+### Azureへのデプロイ
+Azureにデプロイします。
+```
+mvn azure-functions:deploy
+```
+
+
+
+### 参考：function.json
+
+Java以外の言語では、Bindingsの設定をアノテーションではなく function.json というJSONファイルに定義します。
+
+function.json
+```
+{
+    "bindings": [
+        {
+            "authLevel": "function",
+            "type": "httpTrigger",
+            "direction": "in",
+            "name": "req",
+            "methods": [
+                "get",
+                "post"
+            ]
+        },
+        {
+            "type": "queue",
+            "direction": "out",
+            "name": "msg",
+            "queueName": "outqueue",
+            "connection": "AppStorage"
+        }
+    ]
+}
+```
