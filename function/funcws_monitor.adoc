@@ -1,0 +1,42 @@
+# Function の監視
+
+Function の監視には、Application Insights が利用できます。
+
+
+## App Insights での監視
+
+. Azure ポータル画面で Function App を選択します
+. Function の一覧から確認したいFunctionを選択します
++
+image::images/funcws_select_func.png[]
+
+. Functionの画面の左Paneメニューで Monitor をクリックします
++
+このビューではFunctionの実行結果の一覧を参照できます
+
+. 右Pane の Logs タブをクリックします
++
+このビューでは、Function 実行時のログ出力を参照できます
+
+. open in Livemetrics をクリックします
++
+このビューでは、ライブメトリクスが参照できます
+
+
+## Azure Monitor (Log Analytics)での分析
+
+https://docs.microsoft.com/ja-jp/azure/azure-functions/functions-monitor-log-analytics?tabs=java
+
+FunctionのDiag設定で、Log Analyticsワークスペースにログを送信するようにしておくことで、Azureポータル上でログの分析が可能になります。
+
+. Azureポータル画面でFunction Appを選択します
+. 左Paneで Diganotstic settings (preview) を選択します
+. Add diagnostic setting をクリックして設定画面を表示します
+. 設定項目を入力します
+ Diagnostic Setting Name: 任意の名称
+ Log: FunctionAppLogsにチェック
+ Destinationdetails: Send to Log Analytics にチェック
+
+
+
+
