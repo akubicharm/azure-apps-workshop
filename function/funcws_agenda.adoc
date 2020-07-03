@@ -1,0 +1,4 @@
+. link:./funcws_devenv.adoc[開発環境]
+. link:./funcws_simplefunc.adoc[基本のFunction]
+//. タイマー起動するFunction
+. link:./funcws_monitor.adoc[Azure Monitorでのログ確認]
