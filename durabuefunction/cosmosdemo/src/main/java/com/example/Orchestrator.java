@@ -23,6 +23,8 @@ public class Orchestrator {
         result += ctx.callActivity("Capitalize", "London", String.class).await() + ", ";
         result += ctx.callActivity("Capitalize", "Seattle", String.class).await() + ", ";
         result += ctx.callActivity("Capitalize", "Austin", String.class).await();
+
         return result;
-    }    
+    } 
+    
 }

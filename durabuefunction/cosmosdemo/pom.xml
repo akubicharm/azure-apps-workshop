@@ -15,6 +15,9 @@
         <azure.functions.maven.plugin.version>1.22.0</azure.functions.maven.plugin.version>
         <azure.functions.java.library.version>3.0.0</azure.functions.java.library.version>
         <functionAppName>akubicharmdurable</functionAppName>
+        <azure.resourcegroup>mhi</azure.resourcegroup>
+        <azure.appplan>ASP-mhi-94ba</azure.appplan>
+        <azure.os>linux</azure.os>
         <durabletask.azure.functions.version>1.0.0</durabletask.azure.functions.version>
     </properties>
 
@@ -24,6 +27,11 @@
             <artifactId>azure-cosmosdb</artifactId>
             <version>2.6.16</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230227</version>
+        </dependency>        
 
 
         <dependency>
@@ -73,10 +81,10 @@
                     <appName>${functionAppName}</appName>
 
                     <!-- function app resource group -->
-                    <resourceGroup>mhi</resourceGroup>
+                    <resourceGroup>${azure.resourcegroup}</resourceGroup>
 
                     <!-- function app service plan name -->
-                    <appServicePlanName>ASP-mhi-94ba</appServicePlanName>
+                    <appServicePlanName>${azure.appplan}</appServicePlanName>
 
                     <!-- function app region-->
                     <!-- refers https://github.com/microsoft/azure-maven-plugins/wiki/Azure-Functions:-Configuration-Details#supported-regions for all valid values -->
@@ -89,7 +97,7 @@
                     <!-- <disableAppInsights></disableAppInsights> -->
                     <runtime>
                         <!-- runtime os, could be windows, linux or docker-->
-                        <os>linux</os>
+                        <os>${azure.os}</os>
                         <javaVersion>17</javaVersion>
                     </runtime>
                     <appSettings>

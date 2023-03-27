@@ -4,6 +4,8 @@ import com.microsoft.azure.functions.annotation.*;
 import com.microsoft.azure.functions.*;
 import java.util.*;
 
+import org.json.*;
+
 import com.microsoft.durabletask.*;
 import com.microsoft.durabletask.azurefunctions.DurableActivityTrigger;
 import com.microsoft.durabletask.azurefunctions.DurableClientContext;
@@ -17,9 +19,16 @@ public class Activity {
      */
     @FunctionName("Capitalize")
     public String capitalize(
-            @DurableActivityTrigger(name = "name") String name,
-            final ExecutionContext context) {
+            @DurableActivityTrigger(name = "name") String name,            
+            final ExecutionContext context,
+            @CosmosDBOutput(name = "database",
+              databaseName = "mydb",
+              containerName = "myresult",
+              connection = "CosmosDBConnection")
+            OutputBinding<String> outputItem) {
         context.getLogger().info("Capitalizing: " + name);
+        // JSONArray array = new JSONArray(name);
+        // outputItem.setValue(array.getJSONObject(0).toString());        
         return name.toUpperCase();
     }
 }
